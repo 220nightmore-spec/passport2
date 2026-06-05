@@ -125,6 +125,10 @@
               openssl
               pkg-config
               python3
+              python3Packages.opencv4
+              python3Packages.pillow
+              python3Packages.pysdl2
+              python3Packages.pytest
               python3Packages.pip
               python3Packages.virtualenv
               python3Packages.autopep8

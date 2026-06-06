@@ -71,8 +71,19 @@ sim screen="mono" ext="":
 
 # Run unit tests.
 test:
-  just simulator/build color
-  cd ports/stm32/boards/Passport/modules/tests; python3 -m pytest . --simulatordir=$(pwd)/simulator
+    cd "{{justfile_directory()}}/ports/stm32/boards/Passport/modules/tests" && \
+    python3 -m pytest . --simulatordir="{{justfile_directory()}}/simulator"
+
+# Run simulator-backed Passport module unit tests from the repo root.
+unit-test filter="":
+    #!/usr/bin/env bash
+    set -euo pipefail
+    cd "{{justfile_directory()}}/ports/stm32/boards/Passport/modules/tests"
+    extra_args=""
+    if [ -n "{{filter}}" ]; then
+        extra_args="-k {{filter}}"
+    fi
+    python3 -m pytest test_unit.py -vv -s --simulatordir="{{justfile_directory()}}/simulator" ${extra_args}
 
 # Lint the codebase.
 lint: (run-in-docker "just ports/stm32/lint") (run-in-docker "just extmod/foundation-rust/lint")

@@ -108,6 +108,19 @@
               }
             );
 
+          python-with-packages = pkgs.python313.withPackages (ps: with ps; [
+            opencv4.override {
+              enableGtk2 = true;
+              gtk2 = pkgs.gtk2;
+            }
+            pillow
+            pysdl2
+            pytest
+            pip
+            virtualenv
+            autopep8
+          ]);
+
           buildPackages =
             with pkgs;
             [
@@ -124,14 +137,7 @@
               libusb1
               openssl
               pkg-config
-              python3
-              python3Packages.opencv4
-              python3Packages.pillow
-              python3Packages.pysdl2
-              python3Packages.pytest
-              python3Packages.pip
-              python3Packages.virtualenv
-              python3Packages.autopep8
+              python-with-packages
               reuse
               rust-cbindgen
               xterm
